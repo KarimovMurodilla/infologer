@@ -28,7 +28,5 @@ class User(SQLAlchemyBaseUserTable[int], Base):
             name=self.name,
             username=self.username,
             about=self.about,
-            knows=self.knows,
-            tasks=self.tasks,
             created_at=self.created_at
         )

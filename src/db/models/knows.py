@@ -26,8 +26,6 @@ class Know(Base):
             id=self.id,
             title=self.title,
             description=self.description,
-            likes=self.likes,
-            comments=self.comments,
             user_id=self.user_id,
             created_at=self.created_at
         )

@@ -1,28 +1,25 @@
-# from fastapi import APIRouter
+from fastapi import APIRouter
+from fastapi_users import FastAPIUsers
 
-# from api.dependencies import UOWDep
-# from schemas.users import UserSchemaAdd
-# from services.users import UsersService
-
-
-# router = APIRouter(
-#     prefix="/users",
-#     tags=["Users"],
-# )
+from auth.auth import auth_backend
+from auth.manager import get_user_manager
+from db.models.users import User
+from schemas.users import UserSchema, UserSchemaAdd
 
 
-# @router.post("")
-# async def add_user(
-#     user: UserSchemaAdd,
-#     uow: UOWDep,
-# ):
-#     user_id = await UsersService().add_user(uow, user)
-#     return {"user_id": user_id}
+fastapi_users = FastAPIUsers[User, int](
+    get_user_manager,
+    [auth_backend],
+)
 
 
-# @router.get("")
-# async def get_users(
-#     uow: UOWDep,
-# ):
-#     users = await UsersService().get_users(uow)
-#     return users
+router_jwt = fastapi_users.get_auth_router(auth_backend)
+router_jwt.prefix = "/auth/jwt"
+router_jwt.tags = ["auth"]
+
+router_auth = fastapi_users.get_register_router(UserSchema, UserSchemaAdd)
+router_auth.prefix= "/auth"
+router_auth.tags = ["auth"]
+
+
+current_user = fastapi_users.current_user()

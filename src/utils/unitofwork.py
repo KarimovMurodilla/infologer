@@ -4,12 +4,18 @@ from typing import Type
 from db.db import async_session_maker
 from repositories.tasks import TasksRepository
 from repositories.users import UsersRepository
+from repositories.knows import KnowsRepository
+from repositories.comments import CommentsRepository
+from repositories.likes import LikesRepository
 
 
 # https://github1s.com/cosmicpython/code/tree/chapter_06_uow
 class IUnitOfWork(ABC):
     users: Type[UsersRepository]
     tasks: Type[TasksRepository]
+    knows: Type[KnowsRepository]
+    comments: Type[CommentsRepository]
+    likes: Type[LikesRepository]
     
     @abstractmethod
     def __init__(self):
@@ -41,6 +47,9 @@ class UnitOfWork:
 
         self.users = UsersRepository(self.session)
         self.tasks = TasksRepository(self.session)
+        self.knows = KnowsRepository(self.session)
+        self.comments = CommentsRepository(self.session)
+        self.likes = LikesRepository(self.session)
 
     async def __aexit__(self, *args):
         await self.rollback()

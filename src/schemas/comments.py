@@ -17,5 +17,4 @@ class CommentsSchema(BaseModel):
 
 class CommentsSchemaAdd(BaseModel):
     text: str
-    user_id: int
     know_id: int

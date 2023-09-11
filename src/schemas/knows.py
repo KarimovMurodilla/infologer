@@ -8,8 +8,6 @@ class KnowsSchema(BaseModel):
     id: int
     title: str
     description: str
-    likes: List[int]
-    comments: List[int]
     user_id: int
     created_at: datetime.datetime
 

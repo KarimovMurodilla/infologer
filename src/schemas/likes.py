@@ -15,5 +15,4 @@ class LikesSchema(BaseModel):
 
 
 class LikesSchemaAdd(BaseModel):
-    user_id: int
     know_id: int
