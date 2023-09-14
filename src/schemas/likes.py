@@ -10,7 +10,7 @@ class LikesSchema(BaseModel):
     know_id: int
     created_at: datetime.datetime
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 

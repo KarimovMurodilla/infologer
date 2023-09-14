@@ -12,7 +12,7 @@ class TaskSchema(BaseModel):
     status: bool
     created_at: datetime.datetime
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 

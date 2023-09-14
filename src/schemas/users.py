@@ -15,7 +15,7 @@ class UserSchema(schemas.BaseUser[int]):
     is_verified: bool = False
     created_at: datetime.datetime
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 

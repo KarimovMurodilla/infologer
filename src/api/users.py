@@ -13,13 +13,18 @@ fastapi_users = FastAPIUsers[User, int](
 )
 
 
-router_jwt = fastapi_users.get_auth_router(auth_backend)
-router_jwt.prefix = "/auth/jwt"
-router_jwt.tags = ["auth"]
+router_jwt = {
+    'router': fastapi_users.get_auth_router(auth_backend),
+    'prefix': "/auth/jwt",
+    'tags': ["auth"]
+}
 
-router_auth = fastapi_users.get_register_router(UserSchema, UserSchemaAdd)
-router_auth.prefix= "/auth"
-router_auth.tags = ["auth"]
+
+router_auth = {
+    'router': fastapi_users.get_register_router(UserSchema, UserSchemaAdd),
+    'prefix': "/auth",
+    'tags': ["auth"]
+}
 
 
 current_user = fastapi_users.current_user()

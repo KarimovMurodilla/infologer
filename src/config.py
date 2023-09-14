@@ -10,4 +10,12 @@ DB_USER = env.str("DB_USER")
 DB_PASS = env.str("DB_PASS")
 DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
+TESTING = env.bool("TESTING")
+DB_HOST_TEST = env.str("DB_HOST_TEST")
+DB_PORT_TEST = env.str("DB_PORT_TEST")
+DB_NAME_TEST = env.str("DB_NAME_TEST")
+DB_USER_TEST = env.str("DB_USER_TEST")
+DB_PASS_TEST = env.str("DB_PASS_TEST")
+DATABASE_URL_TEST = f"postgresql+asyncpg://{DB_USER_TEST}:{DB_PASS_TEST}@{DB_HOST_TEST}:{DB_PORT_TEST}/{DB_NAME_TEST}"
+
 SECRET = env.str("SECRET")

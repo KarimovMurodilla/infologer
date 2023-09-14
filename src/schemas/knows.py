@@ -11,7 +11,7 @@ class KnowsSchema(BaseModel):
     user_id: int
     created_at: datetime.datetime
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 
