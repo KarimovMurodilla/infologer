@@ -6,6 +6,7 @@ from pydantic import BaseModel
 
 class KnowsSchema(BaseModel):
     id: int
+    first_name: str
     title: str
     description: str
     user_id: int

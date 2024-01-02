@@ -1,14 +1,16 @@
 import datetime
-from typing import List, Optional
+from typing import Optional
 
 from fastapi_users import schemas
+from pydantic import EmailStr
 
 
 class UserSchema(schemas.BaseUser[int]):
     id: int
-    name: str
+    first_name: str
+    last_name: str
     username: str
-    email: str
+    email: EmailStr
     about: str
     is_active: bool = True
     is_superuser: bool = False
@@ -20,10 +22,11 @@ class UserSchema(schemas.BaseUser[int]):
 
 
 class UserSchemaAdd(schemas.BaseUserCreate):
-    name: str
+    first_name: str
+    last_name: str
     username: str
     about: str
-    email: str
+    email: EmailStr
     password: str
     is_active: Optional[bool] = True
     is_superuser: Optional[bool] = False

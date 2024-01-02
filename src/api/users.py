@@ -1,30 +1,33 @@
 from fastapi import APIRouter
-from fastapi_users import FastAPIUsers
 
-from auth.auth import auth_backend
-from auth.manager import get_user_manager
-from db.models.users import User
-from schemas.users import UserSchema, UserSchemaAdd
+from api.tasks import UOWDep, CurrentUser
+from services.users import UsersService
 
 
-fastapi_users = FastAPIUsers[User, int](
-    get_user_manager,
-    [auth_backend],
+
+router = APIRouter(
+    prefix="/users",
+    tags=["Users"],
 )
 
 
-router_jwt = {
-    'router': fastapi_users.get_auth_router(auth_backend),
-    'prefix': "/auth/jwt",
-    'tags': ["auth"]
-}
+@router.get("")
+async def get_users(
+    uow: UOWDep
+):
+    users = await UsersService().get_users(uow)
+    return users
 
 
-router_auth = {
-    'router': fastapi_users.get_register_router(UserSchema, UserSchemaAdd),
-    'prefix': "/auth",
-    'tags': ["auth"]
-}
+@router.get("/filter")
+async def get_user_by_username(
+    uow: UOWDep,
+    username: str
+):
+    users = await UsersService().get_user_like_username(uow, username)
+    return users
 
 
-current_user = fastapi_users.current_user()
+@router.get("/me")
+async def read_users_me(current_user: CurrentUser):
+    return current_user

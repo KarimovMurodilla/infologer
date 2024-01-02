@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import Depends
 
 from utils.unitofwork import IUnitOfWork, UnitOfWork
-from api.users import current_user, User
+from api.auth import current_user, User
 
 
 UOWDep = Annotated[IUnitOfWork, Depends(UnitOfWork)]

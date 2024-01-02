@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from sqlalchemy import delete, insert, select, update
+from sqlalchemy import delete, insert, select, update, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -46,10 +46,16 @@ class SQLAlchemyRepository(AbstractRepository):
         stmt = select(self.model).filter_by(**filters)
         res = await self.session.execute(stmt)
         res = res.scalar_one_or_none()
-
+    
         if res:
             res = res.to_read_model()
             
+        return res
+
+    async def find_like(self, value: str):
+        stmt = select(self.model).where(text(f"username LIKE '%{value}%' OR first_name LIKE '%{value}%'"))
+        res = await self.session.execute(stmt)
+        res = [row[0].to_read_model() for row in res.all()]
         return res
 
     async def delete_one(self, **filters: dict) -> int:

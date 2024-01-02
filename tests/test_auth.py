@@ -7,14 +7,14 @@ from conftest import client
 
 def test_register():
     response = client.post("/auth/register", json={
-        "email": "73hdddhhs",
+        "email": "johndoe@gmail.com",
         "password": "1234",
         "is_active": True,
         "is_superuser": False,
         "is_verified": False,
-        "name": "wefwf",
-        "username": "wefwf",
-        "about": "wefwf"
+        "name": "john",
+        "username": "johndoe",
+        "about": "I'm john doe"
     })
 
     assert response.status_code == 201
@@ -23,7 +23,7 @@ def test_register():
 async def test_login(redis_client: Redis):
     response = client.post("/auth/jwt/login", data={
         "grant_type": "",
-        "username": "73hdddhhs",
+        "username": "johndoe@gmail.com",
         "password": "1234",
         "scope": "",
         "client_id": "",

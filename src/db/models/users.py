@@ -14,9 +14,10 @@ from .tasks import Task
 
 class User(SQLAlchemyBaseUserTable[int], Base):
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(50), nullable=False)
+    first_name: Mapped[str] = mapped_column(String(25), nullable=False)
+    last_name: Mapped[str] = mapped_column(String(25), nullable=False)
     username: Mapped[str] = mapped_column(String(15), nullable=False)
-    about: Mapped[str]
+    about: Mapped[str] = mapped_column(nullable=True)
     email: Mapped[str] = mapped_column(String(length=320), unique=True, index=True, nullable=False)
     knows: Mapped[List[Know]] = relationship("Know", cascade="all, delete")
     tasks: Mapped[List[Task]] = relationship("Task", cascade="all, delete")
@@ -25,8 +26,10 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     def to_read_model(self) -> UserSchema:
         return UserSchema(
             id=self.id,
-            name=self.name,
+            first_name=self.first_name,
+            last_name=self.last_name,
             username=self.username,
             about=self.about,
+            email=self.email,
             created_at=self.created_at
         )

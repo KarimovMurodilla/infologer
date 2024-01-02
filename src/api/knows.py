@@ -26,5 +26,13 @@ async def add_know(
     uow: UOWDep,
     user: CurrentUser
 ):
-    know_id = await KnowsService().add_know(uow, know, user.id)
+    know_id = await KnowsService().add_know(uow, know, user)
     return {"know_id": know_id}
+
+
+@router.get("/all")
+async def get_knows(
+    uow: UOWDep
+):
+    knows = await KnowsService().get_all_knows(uow)
+    return knows

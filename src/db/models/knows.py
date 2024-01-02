@@ -19,11 +19,13 @@ class Know(Base):
     likes: Mapped[List["Like"]] = relationship()
     comments: Mapped[List["Comment"]] = relationship()
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
+    first_name: Mapped[int] = mapped_column(String(25))
     created_at: Mapped[Optional[Annotated[datetime.datetime, mapped_column(nullable=False, default=datetime.datetime.utcnow)]]]
     
     def to_read_model(self) -> KnowsSchema:
         return KnowsSchema(
             id=self.id,
+            first_name=self.first_name,
             title=self.title,
             description=self.description,
             user_id=self.user_id,
