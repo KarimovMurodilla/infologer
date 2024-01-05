@@ -1,3 +1,4 @@
+from fastapi import APIRouter
 from fastapi_users import FastAPIUsers
 
 from auth.auth import auth_backend

@@ -19,3 +19,11 @@ DB_PASS_TEST = env.str("DB_PASS_TEST")
 DATABASE_URL_TEST = f"postgresql+asyncpg://{DB_USER_TEST}:{DB_PASS_TEST}@{DB_HOST_TEST}:{DB_PORT_TEST}/{DB_NAME_TEST}"
 
 SECRET = env.str("SECRET")
+
+# ---Mailjet Api (Send mail)---
+API_KEY_EMAIL = env.str("API_KEY_EMAIL")
+API_SECRET = env.str("API_SECRET")
+
+# Email Sender
+SENDER_GMAIL = env.str("SENDER_GMAIL")
+SENDER_NAME = env.str("SENDER_NAME")
