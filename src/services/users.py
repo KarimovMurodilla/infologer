@@ -15,7 +15,17 @@ class UsersService:
             users = await uow.users.find_all()
             return users
 
-    async def get_user_like_username(self, uow: IUnitOfWork, value: str):
+    async def get_user_by_email(self, uow: IUnitOfWork, email: str):
+        async with uow:
+            user = await uow.users.find_one(email=email)
+            return user
+
+    async def get_user_by_username(self, uow: IUnitOfWork, username: str):
+        async with uow:
+            user = await uow.users.find_one(username=username)
+            return user
+        
+    async def get_users_by_username(self, uow: IUnitOfWork, value: str):
         async with uow:
             users = await uow.users.find_like(value)
             return users

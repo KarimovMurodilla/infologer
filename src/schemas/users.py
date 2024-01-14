@@ -7,11 +7,11 @@ from pydantic import EmailStr
 
 class UserSchema(schemas.BaseUser[int]):
     id: int
-    first_name: str
-    last_name: str
-    username: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    username: Optional[str] = None
     email: EmailStr
-    about: str
+    about: Optional[str] = None
     is_active: bool = True
     is_superuser: bool = False
     is_verified: bool = False
@@ -24,10 +24,15 @@ class UserSchema(schemas.BaseUser[int]):
 class UserSchemaAdd(schemas.BaseUserCreate):
     first_name: str
     last_name: str
-    username: str
-    about: str
     email: EmailStr
     password: str
     is_active: Optional[bool] = True
     is_superuser: Optional[bool] = False
     is_verified: Optional[bool] = False
+
+
+class UserUpdate(schemas.BaseUserUpdate):
+    first_name: str
+    last_name: str
+    username: str
+    about: Optional[str] = None

@@ -9,6 +9,7 @@ from fastapi_cache.decorator import cache
 from redis import asyncio as aioredis
 
 from api.routers import all_routers
+from config import FRONTEND_BASE_URL
 
 
 app = FastAPI(
@@ -24,7 +25,8 @@ for router in all_routers:
         app.include_router(router)
 
 origins = [
-    "http://localhost:3000",
+    FRONTEND_BASE_URL,
+    "http://localhost:3000"
 ]
 
 app.add_middleware(

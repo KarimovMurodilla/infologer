@@ -1,4 +1,8 @@
-from api.auth import router_jwt, router_auth
+from api.auth import (
+    router_jwt, router_auth, 
+    router_google_oauth, router_password,
+    router_users
+)
 
 from api.tasks import router as router_tasks
 from api.knows import router as router_knows
@@ -10,6 +14,9 @@ from api.users import router as router_user
 all_routers = [
     router_jwt,
     router_auth,
+    router_google_oauth,
+    router_password,
+    router_users,
     
     router_user,
 

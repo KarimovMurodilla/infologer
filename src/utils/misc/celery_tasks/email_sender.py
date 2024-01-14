@@ -100,3 +100,7 @@ def email_verification_is_successful(email, code):
     sended_code = int(redis_cache.get(email)) if redis_cache.get(email) else 0
 
     return code == sended_code
+
+
+
+# celery -A utils.misc.celery_tasks.email_sender:celery worker --loglevel=INFO
