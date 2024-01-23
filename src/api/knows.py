@@ -19,7 +19,6 @@ async def get_knows(
     knows = await KnowsService().get_knows(uow, user.id)
     return knows
 
-
 @router.post("")
 async def add_know(
     know: KnowsSchemaAdd,
@@ -35,4 +34,13 @@ async def get_knows(
     uow: UOWDep
 ):
     knows = await KnowsService().get_all_knows(uow)
+    return knows
+
+
+@router.get("/{user_id}")
+async def get_knows_by_user_id(
+    user_id: int,
+    uow: UOWDep
+):
+    knows = await KnowsService().get_knows(uow, user_id)
     return knows

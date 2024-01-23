@@ -1,4 +1,4 @@
-from schemas.tasks import TaskSchemaAdd
+from schemas.tasks import TaskSchemaAdd, TaskSchemaEdit
 from utils.repository import AbstractRepository
 from utils.unitofwork import IUnitOfWork
 
@@ -18,22 +18,12 @@ class TasksService:
             tasks = await uow.tasks.find_all_by(user_id=user_id)
             return tasks
 
-    # async def edit_task(self, uow: IUnitOfWork, task_id: int, task: TaskSchemaEdit):
-    #     tasks_dict = task.model_dump()
-    #     async with uow:
-    #         await uow.tasks.edit_one(task_id, tasks_dict)
+    async def edit_task(self, uow: IUnitOfWork, task_id: int, user_id: int, task: TaskSchemaEdit):
+        tasks_dict = task.model_dump()
+        
+        [tasks_dict.pop(i) for i in [k for k in tasks_dict.keys() if tasks_dict[k] is None]]
 
-    #         curr_task = await uow.tasks.find_one(id=task_id)
-    #         task_history_log = TaskHistorySchemaAdd(
-    #             task_id=task_id,
-    #             previous_assignee_id=curr_task.assignee_id,
-    #             new_assignee_id=task.assignee_id
-    #         )
-    #         task_history_log = task_history_log.model_dump()
-    #         await uow.task_history.add_one(task_history_log)
-    #         await uow.commit()
+        async with uow:
+            await uow.tasks.edit_one(data=tasks_dict, id=task_id, user_id=user_id)
 
-    # async def get_task_history(self, uow: IUnitOfWork):
-    #     async with uow:
-    #         history = await uow.task_history.find_all()
-    #         return history
+            await uow.commit()

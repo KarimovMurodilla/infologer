@@ -1,15 +1,25 @@
 import datetime
-from typing import List
+from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, EmailStr, UUID4
+from fastapi_users import schemas
+
+
+class User(schemas.BaseUser[int]):
+    email: EmailStr = Field(exclude=True)
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    username: Optional[str] = None
+
+    class ConfigDict:
+        from_attributes = True
 
 
 class KnowsSchema(BaseModel):
-    id: int
-    first_name: str
+    id: UUID4
     title: str
     description: str
-    user_id: int
+    user: User
     created_at: datetime.datetime
 
     class ConfigDict:

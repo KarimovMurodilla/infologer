@@ -1,13 +1,13 @@
 import datetime
 from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, UUID4
 
 
 class LikesSchema(BaseModel):
-    id: int
+    id: UUID4
     user_id: int
-    know_id: int
+    know_id: UUID4
     created_at: datetime.datetime
 
     class ConfigDict:
@@ -15,4 +15,4 @@ class LikesSchema(BaseModel):
 
 
 class LikesSchemaAdd(BaseModel):
-    know_id: int
+    know_id: UUID4

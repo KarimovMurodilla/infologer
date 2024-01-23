@@ -28,10 +28,10 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     username: Mapped[str] = mapped_column(String(35), nullable=True)
     about: Mapped[str] = mapped_column(nullable=True)
     email: Mapped[str] = mapped_column(String(length=320), unique=True, index=True, nullable=False)
-    knows: Mapped[List[Know]] = relationship("Know", cascade="all, delete")
-    tasks: Mapped[List[Task]] = relationship("Task", cascade="all, delete")
-    knows_is_private: Mapped[bool] = mapped_column(default=False, nullable=True)
-    tasks_is_private: Mapped[bool] = mapped_column(default=False, nullable=True)
+    knows: Mapped[List["Know"]] = relationship(cascade="all, delete", back_populates="user")
+    tasks: Mapped[List["Task"]] = relationship(cascade="all, delete")
+    is_knows_private: Mapped[bool] = mapped_column(default=False, nullable=True)
+    is_tasks_private: Mapped[bool] = mapped_column(default=False, nullable=True)
     oauth_accounts: Mapped[List[OAuthAccount]] = relationship("OAuthAccount", lazy="joined")
     created_at: Mapped[Optional[Annotated[datetime.datetime, mapped_column(nullable=False, default=datetime.datetime.utcnow)]]]
 
@@ -43,5 +43,7 @@ class User(SQLAlchemyBaseUserTable[int], Base):
             username=self.username,
             about=self.about,
             email=self.email,
+            is_knows_private=self.is_knows_private,
+            is_tasks_private=self.is_tasks_private,
             created_at=self.created_at
         )

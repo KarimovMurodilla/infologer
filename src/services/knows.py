@@ -7,7 +7,6 @@ class KnowsService:
     async def add_know(self, uow: IUnitOfWork, know: KnowsSchemaAdd, user):
         knows_dict = know.model_dump()
         knows_dict['user_id'] = user.id
-        knows_dict['first_name'] = user.first_name
         
         async with uow:
             know_id = await uow.knows.add_one(knows_dict)

@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from api.dependencies import UOWDep, CurrentUser
-from schemas.tasks import TaskSchemaAdd
+from schemas.tasks import TaskSchemaAdd, TaskSchemaEdit
 from services.tasks import TasksService
 
 
@@ -19,7 +19,6 @@ async def get_tasks(
     tasks = await TasksService().get_tasks(uow, user.id)
     return tasks
 
-
 @router.post("")
 async def add_task(
     task: TaskSchemaAdd,
@@ -30,11 +29,21 @@ async def add_task(
     return {"task_id": task_id}
 
 
-# @router.patch("/{id}")
-# async def edit_task(
-#     id: int,
-#     task: TaskSchemaEdit,
-#     uow: UOWDep,
-# ):
-#     await TasksService().edit_task(uow, id, task)
-#     return {"ok": True}
+@router.patch("/{id}")
+async def edit_task(
+    id: str,
+    task: TaskSchemaEdit,
+    uow: UOWDep,
+    user: CurrentUser
+):
+    await TasksService().edit_task(uow, id, user.id, task)
+    return {"ok": True}
+
+
+@router.get("/{id}")
+async def get_tasks_by_user_id(
+    id: int,
+    uow: UOWDep
+):
+    tasks = await TasksService().get_tasks(uow, id)
+    return tasks

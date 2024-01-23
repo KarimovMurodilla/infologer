@@ -12,6 +12,8 @@ class UserSchema(schemas.BaseUser[int]):
     username: Optional[str] = None
     email: EmailStr
     about: Optional[str] = None
+    is_knows_private: Optional[bool] = False
+    is_tasks_private: Optional[bool] = False
     is_active: bool = True
     is_superuser: bool = False
     is_verified: bool = False
@@ -32,7 +34,9 @@ class UserSchemaAdd(schemas.BaseUserCreate):
 
 
 class UserUpdate(schemas.BaseUserUpdate):
-    first_name: str
-    last_name: str
-    username: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    username: Optional[str] = None
     about: Optional[str] = None
+    is_knows_private: Optional[bool] = None
+    is_tasks_private: Optional[bool] = None

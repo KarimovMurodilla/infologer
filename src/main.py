@@ -25,19 +25,27 @@ for router in all_routers:
         app.include_router(router)
 
 origins = [
-    FRONTEND_BASE_URL,
-    "http://localhost:3000"
+    # FRONTEND_BASE_URL,
+    # "http://localhost:3000"
+    "https://918e-37-110-214-39.ngrok-free.app",
+    "https://72db-37-110-214-39.ngrok-free.app"
 ]
 
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
+#     allow_headers=["Content-Type", "Set-Cookie", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin",
+#                    "Authorization"],
+# )
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],  # Adjust this to allow requests from specific origins
     allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
-    allow_headers=["Content-Type", "Set-Cookie", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin",
-                   "Authorization"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
-
 
 @app.on_event("startup")
 async def startup():

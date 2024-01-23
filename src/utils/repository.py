@@ -27,20 +27,36 @@ class SQLAlchemyRepository(AbstractRepository):
         res = await self.session.execute(stmt)
         return res.unique().scalar_one()
 
-    async def edit_one(self, id: int, data: dict) -> int:
-        stmt = update(self.model).values(**data).filter_by(id=id).returning(self.model.id)
+    async def edit_one(self, data: dict, **filters) -> int:
+        stmt = update(self.model).values(**data).filter_by(**filters).returning(self.model.id)
         res = await self.session.execute(stmt)
         return res.unique().scalar_one()
     
     async def find_all(self):
-        stmt = select(self.model)
+        if self.model.__name__ == "Know":
+            stmt = (
+                select(self.model)
+                    .options(joinedload(self.model.user))  # Load the associated user data
+            )
+
+        else:
+            stmt = select(self.model)
+            
         res = await self.session.execute(stmt)
         res = [row[0].to_read_model() for row in res.unique().all()]
         
         return res
     
     async def find_all_by(self, **filters: dict):
-        stmt = select(self.model).filter_by(**filters)
+        if self.model.__name__ == "Know":
+            stmt = (
+                select(self.model)
+                    .options(joinedload(self.model.user))
+                    .filter_by(**filters) 
+            )
+        else:
+            stmt = select(self.model).filter_by(**filters)
+
         res = await self.session.execute(stmt)
         res = [row[0].to_read_model() for row in res.unique().all()]
         return res
