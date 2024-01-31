@@ -13,11 +13,14 @@ router = APIRouter(
 
 @router.get("/{know_id}")
 async def get_likes(
-    know_id: int,
+    know_id: str,
     uow: UOWDep,
+    current_user: CurrentUser
 ):
-    likes = await LikesService().get_likes(uow, know_id=know_id)
-    return likes
+    count = await LikesService().get_count(uow, know_id=know_id)
+    user = await LikesService().get_user(uow, know_id=know_id, user_id=current_user.id)
+
+    return {"count": count, "status": bool(user)}
 
 
 @router.post("")

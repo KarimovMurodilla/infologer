@@ -1,8 +1,8 @@
 import datetime
-from typing import Optional
+from typing import Optional, Any, List
 
 from fastapi_users import schemas
-from pydantic import EmailStr
+from pydantic import EmailStr, BaseModel
 
 
 class UserSchema(schemas.BaseUser[int]):

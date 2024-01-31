@@ -19,6 +19,7 @@ class Task(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
     status: Mapped[bool] = mapped_column(default=False)
     created_at: Mapped[Optional[Annotated[datetime.datetime, mapped_column(nullable=False, default=datetime.datetime.utcnow)]]]
+    updated_at: Mapped[Optional[Annotated[datetime.datetime, mapped_column(nullable=True, default=datetime.datetime.utcnow)]]]
 
     def to_read_model(self) -> TaskSchema:
         return TaskSchema(
@@ -28,4 +29,5 @@ class Task(Base):
             user_id=self.user_id,
             status=self.status,
             created_at=self.created_at,
+            updated_at=self.updated_at
         )

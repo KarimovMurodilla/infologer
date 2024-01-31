@@ -26,9 +26,7 @@ for router in all_routers:
 
 origins = [
     # FRONTEND_BASE_URL,
-    # "http://localhost:3000"
-    "https://918e-37-110-214-39.ngrok-free.app",
-    "https://72db-37-110-214-39.ngrok-free.app"
+    "http://localhost:3000"
 ]
 
 # app.add_middleware(

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from sqlalchemy import delete, insert, select, update, text
+from sqlalchemy import delete, insert, select, update, text, desc, func
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -32,30 +32,31 @@ class SQLAlchemyRepository(AbstractRepository):
         res = await self.session.execute(stmt)
         return res.unique().scalar_one()
     
-    async def find_all(self):
-        if self.model.__name__ == "Know":
-            stmt = (
-                select(self.model)
-                    .options(joinedload(self.model.user))  # Load the associated user data
-            )
-
-        else:
-            stmt = select(self.model)
+    async def find_all(self, offset: int):
+        stmt = select(self.model).order_by(desc(self.model.created_at)).limit(5).offset(offset)
             
         res = await self.session.execute(stmt)
         res = [row[0].to_read_model() for row in res.unique().all()]
         
         return res
     
-    async def find_all_by(self, **filters: dict):
-        if self.model.__name__ == "Know":
+    async def find_all_by(self, offset: int, **filters: dict):
+        if self.model.__name__ == "Know" and not filters:
             stmt = (
                 select(self.model)
-                    .options(joinedload(self.model.user))
-                    .filter_by(**filters) 
+                    .order_by(desc(self.model.created_at))
+                    .filter(self.model.user.has(is_knows_private=False))
+                    .limit(5)
+                    .offset(offset)            
             )
         else:
-            stmt = select(self.model).filter_by(**filters)
+            stmt = (
+                select(self.model)
+                    .order_by(desc(self.model.created_at))
+                    .filter_by(**filters)
+                    .limit(5)
+                    .offset(offset)
+            )
 
         res = await self.session.execute(stmt)
         res = [row[0].to_read_model() for row in res.unique().all()]
@@ -71,12 +72,23 @@ class SQLAlchemyRepository(AbstractRepository):
             
         return res
 
-    async def find_like(self, value: str):
-        stmt = select(self.model).where(text(f"username LIKE '%{value}%' OR first_name LIKE '%{value}%'"))
+    async def find_like(self, value: str, offset: int):
+        stmt = select(self.model).where(text(f"username LIKE '%{value}%' OR first_name LIKE '%{value}%'")).limit(10).offset(offset)
         res = await self.session.execute(stmt)
         res = [row[0].to_read_model() for row in res.unique().all()]
         return res
 
+    async def count(self, **filters: dict):
+        stmt = (
+            select(self.model)
+                .filter_by(**filters)
+        )
+
+        res = await self.session.execute(stmt)
+        result = res.all()
+        count = len(result)
+        return count
+    
     async def delete_one(self, **filters: dict) -> int:
         stmt = delete(self.model).filter_by(**filters).returning(self.model.id)
         res = await self.session.execute(stmt)

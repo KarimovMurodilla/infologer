@@ -18,11 +18,12 @@ class Know(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
     title: Mapped[str] = mapped_column(String(50))
     description: Mapped[str]
-    likes: Mapped[List["Like"]] = relationship()
+    likes: Mapped[List["Like"]] = relationship(lazy="joined")
     comments: Mapped[List["Comment"]] = relationship()
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
-    user = relationship("User", back_populates="knows")
+    user = relationship("User", back_populates="knows", lazy="joined")
     created_at: Mapped[Optional[Annotated[datetime.datetime, mapped_column(nullable=False, default=datetime.datetime.utcnow)]]]
+    updated_at: Mapped[Optional[Annotated[datetime.datetime, mapped_column(nullable=True, default=datetime.datetime.utcnow)]]]
     
     def to_read_model(self) -> KnowsSchema:
         return KnowsSchema(
@@ -30,5 +31,6 @@ class Know(Base):
             title=self.title,
             description=self.description,
             user=self.user,
+            likes=[like.to_read_model() for like in self.likes],
             created_at=self.created_at
         )

@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from api.dependencies import UOWDep, CurrentUser
 from schemas.tasks import TaskSchemaAdd, TaskSchemaEdit
 from services.tasks import TasksService
+from services.users import UsersService
 
 
 router = APIRouter(
@@ -14,9 +15,10 @@ router = APIRouter(
 @router.get("")
 async def get_tasks(
     uow: UOWDep,
-    user: CurrentUser
+    user: CurrentUser,
+    page: int
 ):
-    tasks = await TasksService().get_tasks(uow, user.id)
+    tasks = await TasksService().get_tasks(uow, user.id, offset=page)
     return tasks
 
 @router.post("")
@@ -40,10 +42,17 @@ async def edit_task(
     return {"ok": True}
 
 
-@router.get("/{id}")
+@router.get("/{user_id}")
 async def get_tasks_by_user_id(
-    id: int,
-    uow: UOWDep
+    user_id: int,
+    uow: UOWDep,
+    page: int
 ):
-    tasks = await TasksService().get_tasks(uow, id)
+
+    user = await UsersService().get_user_by_id(uow, id=user_id)
+    
+    if user.is_tasks_private:
+        return {"detail": "private"}
+    
+    tasks = await TasksService().get_tasks(uow, user_id, offset=page)
     return tasks

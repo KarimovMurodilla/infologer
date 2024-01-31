@@ -19,7 +19,7 @@ class OAuthAccount(SQLAlchemyBaseOAuthAccountTable[int], Base):
     @declared_attr
     def user_id(cls) -> Mapped[int]:
         return mapped_column(Integer, ForeignKey("user.id", ondelete="cascade"), nullable=False)
-
+    
 
 class User(SQLAlchemyBaseUserTable[int], Base):
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -45,5 +45,5 @@ class User(SQLAlchemyBaseUserTable[int], Base):
             email=self.email,
             is_knows_private=self.is_knows_private,
             is_tasks_private=self.is_tasks_private,
-            created_at=self.created_at
+            created_at=self.created_at,
         )

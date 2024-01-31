@@ -4,6 +4,7 @@ from typing import List, Optional
 from pydantic import BaseModel, Field, EmailStr, UUID4
 from fastapi_users import schemas
 
+from .likes import LikesSchema
 
 class User(schemas.BaseUser[int]):
     email: EmailStr = Field(exclude=True)
@@ -20,6 +21,7 @@ class KnowsSchema(BaseModel):
     title: str
     description: str
     user: User
+    likes: List[LikesSchema]
     created_at: datetime.datetime
 
     class ConfigDict:

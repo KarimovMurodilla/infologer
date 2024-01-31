@@ -94,6 +94,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
                 username = first_name.lower() + '_' + str(g.generate_code())
 
                 user_dict = {
+                    "id": g.generate_user_id(),
                     "email": account_email,
                     "first_name": first_name,
                     "last_name": last_name,

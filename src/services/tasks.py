@@ -13,9 +13,9 @@ class TasksService:
             await uow.commit()
             return task_id
 
-    async def get_tasks(self, uow: IUnitOfWork, user_id: int):
+    async def get_tasks(self, uow: IUnitOfWork, user_id: int, offset: int):
         async with uow:
-            tasks = await uow.tasks.find_all_by(user_id=user_id)
+            tasks = await uow.tasks.find_all_by(offset=offset, user_id=user_id)
             return tasks
 
     async def edit_task(self, uow: IUnitOfWork, task_id: int, user_id: int, task: TaskSchemaEdit):

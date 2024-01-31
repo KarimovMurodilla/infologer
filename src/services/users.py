@@ -10,10 +10,15 @@ class UsersService:
             await uow.commit()
             return user_id
 
-    async def get_users(self, uow: IUnitOfWork):
+    async def get_users(self, uow: IUnitOfWork, offset: int):
         async with uow:
-            users = await uow.users.find_all()
+            users = await uow.users.find_all(offset=offset)
             return users
+        
+    async def get_user_by_id(self, uow: IUnitOfWork, id: int):
+        async with uow:
+            user = await uow.users.find_one(id=id)
+            return user
 
     async def get_user_by_email(self, uow: IUnitOfWork, email: str):
         async with uow:
@@ -25,7 +30,7 @@ class UsersService:
             user = await uow.users.find_one(username=username)
             return user
         
-    async def get_users_by_username(self, uow: IUnitOfWork, value: str):
+    async def get_users_by_username(self, uow: IUnitOfWork, value: str, offset: int):
         async with uow:
-            users = await uow.users.find_like(value)
+            users = await uow.users.find_like(value, offset)
             return users

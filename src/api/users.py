@@ -5,7 +5,6 @@ from fastapi import APIRouter, HTTPException
 
 from api.tasks import UOWDep, CurrentUser
 from services.users import UsersService
-from schemas.users import UserSchema
 from utils.misc.celery_tasks.email_sender import send_verify_code_to_email, email_verification_is_successful
 from utils.misc.generators.code_generator import Generator
 
@@ -18,9 +17,10 @@ router = APIRouter(
 
 @router.get("")
 async def get_users(
-    uow: UOWDep
+    uow: UOWDep,
+    page: int
 ):
-    users = await UsersService().get_users(uow)
+    users = await UsersService().get_users(uow, offset=page)
     return users
 
 
