@@ -27,9 +27,10 @@ async def get_users(
 @router.get("/filter")
 async def get_user_by_username(
     uow: UOWDep,
-    username: str
+    username: str,
+    page: int
 ):
-    users = await UsersService().get_users_by_username(uow, username)
+    users = await UsersService().get_users_by_username(uow, username, offset=page)
     return users
 
 

@@ -1,0 +1,37 @@
+version: "3.7"
+services:
+  db:
+    image: postgres:12.15
+    container_name: todogram_db
+    command: -p 1221
+    expose:
+      - 1221
+    env_file:
+      - .env-non-dev
+
+  redis:
+    image: redis:7
+    container_name: todogram_redis_app
+
+  app:
+    build:
+      context: .
+    env_file:
+      - .env-non-dev
+    container_name: todogram_app
+    command: ["/fastapi_app/docker/app.sh"]
+    ports:
+      - 9999:8000
+    depends_on:
+      - db
+      - redis
+
+  celery:
+    build:
+      context: .
+    env_file:
+      - .env-non-dev
+    container_name: todogram_celery_app
+    command: ["/fastapi_app/docker/celery.sh", "celery"]
+    depends_on:
+      - redis

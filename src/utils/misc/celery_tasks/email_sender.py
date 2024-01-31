@@ -3,7 +3,9 @@ from celery import Celery
 from utils.misc.sender import Email
 from ..redis_instance import redis_cache
 
-celery = Celery('tasks', broker='redis://localhost:6379')
+from config import REDIS_HOST, REDIS_PORT
+
+celery = Celery('tasks', broker=f'redis://{REDIS_HOST}:{REDIS_PORT}')
 
 
 def generate_email_text_part_template(first_name: str, code: int):
