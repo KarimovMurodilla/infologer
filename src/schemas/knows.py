@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from typing import List, Optional
 
 from pydantic import BaseModel, Field, EmailStr, UUID4
@@ -22,7 +22,8 @@ class KnowsSchema(BaseModel):
     description: str
     user: User
     likes: List[LikesSchema]
-    created_at: datetime.datetime
+    created_at: datetime
+    updated_at: Optional[datetime] = None
 
     class ConfigDict:
         from_attributes = True
@@ -31,3 +32,20 @@ class KnowsSchema(BaseModel):
 class KnowsSchemaAdd(BaseModel):
     title: str
     description: str
+
+
+class KnowSchemaEdit(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+
+    class Config:
+        populate_by_name = True
+        json_schema_extra = {
+            "example": {
+                "title": "Your Title",
+                "description": "Your Description"
+            }
+        }
+        exclude = ['updated_at']
+    
+    updated_at: datetime = Field(default_factory=datetime.utcnow)

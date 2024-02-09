@@ -1,5 +1,4 @@
-from schemas.knows import KnowsSchemaAdd
-from utils.repository import AbstractRepository
+from schemas.knows import KnowSchemaEdit, KnowsSchemaAdd
 from utils.unitofwork import IUnitOfWork
 
 
@@ -22,3 +21,19 @@ class KnowsService:
         async with uow:
             knows = await uow.knows.find_all_by(offset=offset)
             return knows
+        
+    async def edit_know(self, uow: IUnitOfWork, know_id: str, user_id: int, know: KnowSchemaEdit):
+        knows_dict = know.model_dump()
+        
+        [knows_dict.pop(i) for i in [k for k in knows_dict.keys() if knows_dict[k] is None]]
+
+        async with uow:
+            await uow.knows.edit_one(data=knows_dict, id=know_id, user_id=user_id)
+
+            await uow.commit()
+
+    async def delete_know(self, uow: IUnitOfWork, know_id: str, user_id: int):
+        async with uow:
+            know_id = await uow.knows.delete_one(id=know_id, user_id=user_id)
+            await uow.commit()
+            return know_id

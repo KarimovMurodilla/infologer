@@ -56,3 +56,13 @@ async def get_tasks_by_user_id(
     
     tasks = await TasksService().get_tasks(uow, user_id, offset=page)
     return tasks
+
+
+@router.delete("/{id}")
+async def delete_task(
+    id: str,
+    uow: UOWDep,
+    user: CurrentUser
+):
+    res = await TasksService().delete_task(uow, id, user.id)
+    return {"task_id": res}

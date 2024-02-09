@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from api.dependencies import UOWDep, CurrentUser
-from schemas.knows import KnowsSchemaAdd
+from schemas.knows import KnowSchemaEdit, KnowsSchemaAdd
 from services.knows import KnowsService
 from services.users import UsersService
 
@@ -30,6 +30,15 @@ async def add_know(
     know_id = await KnowsService().add_know(uow, know, user)
     return {"know_id": know_id}
 
+@router.patch("/{id}")
+async def edit_know(
+    id: str,
+    know: KnowSchemaEdit,
+    uow: UOWDep,
+    user: CurrentUser
+):
+    await KnowsService().edit_know(uow, id, user.id, know)
+    return {"ok": True}
 
 @router.get("/all")
 async def get_knows(
@@ -53,3 +62,13 @@ async def get_knows_by_user_id(
     
     knows = await KnowsService().get_knows(uow, user_id, offset=page)
     return knows
+
+
+@router.delete("/{id}")
+async def delete_know(
+    id: str,
+    uow: UOWDep,
+    user: CurrentUser
+):
+    res = await KnowsService().delete_know(uow, id, user.id)
+    return {"know_id": res}

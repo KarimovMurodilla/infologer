@@ -1,5 +1,4 @@
 from schemas.tasks import TaskSchemaAdd, TaskSchemaEdit
-from utils.repository import AbstractRepository
 from utils.unitofwork import IUnitOfWork
 
 
@@ -27,3 +26,9 @@ class TasksService:
             await uow.tasks.edit_one(data=tasks_dict, id=task_id, user_id=user_id)
 
             await uow.commit()
+
+    async def delete_task(self, uow: IUnitOfWork, task_id: str, user_id: int):
+        async with uow:
+            task_id = await uow.tasks.delete_one(id=task_id, user_id=user_id)
+            await uow.commit()
+            return task_id

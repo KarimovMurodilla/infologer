@@ -32,5 +32,6 @@ class Know(Base):
             description=self.description,
             user=self.user,
             likes=[like.to_read_model() for like in self.likes],
-            created_at=self.created_at
+            created_at=self.created_at,
+            updated_at=self.updated_at
         )
