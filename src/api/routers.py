@@ -9,6 +9,7 @@ from api.knows import router as router_knows
 from api.comments import router as router_comments
 from api.likes import router as router_likes
 from api.users import router as router_user
+from api.feedback import router as router_feedback
 
 
 all_routers = [
@@ -23,5 +24,6 @@ all_routers = [
     router_tasks,
     router_knows,
     router_comments,
-    router_likes
+    router_likes,
+    router_feedback
 ]

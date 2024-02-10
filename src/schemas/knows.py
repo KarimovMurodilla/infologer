@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field, EmailStr, UUID4
 from fastapi_users import schemas
 
 from .likes import LikesSchema
+from .feedback import FeedbackSchema
 
 class User(schemas.BaseUser[int]):
     email: EmailStr = Field(exclude=True)
@@ -22,6 +23,7 @@ class KnowsSchema(BaseModel):
     description: str
     user: User
     likes: List[LikesSchema]
+    feedback: Optional[FeedbackSchema] = None
     created_at: datetime
     updated_at: Optional[datetime] = None
 

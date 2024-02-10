@@ -12,6 +12,11 @@ class KnowsService:
             await uow.commit()
             return know_id
 
+    async def get_know(self, uow: IUnitOfWork, know_id: str):
+        async with uow:
+            know = await uow.knows.find_one(id=know_id)
+            return know
+
     async def get_knows(self, uow: IUnitOfWork, user_id: int, offset: int):
         async with uow:
             knows = await uow.knows.find_all_by(offset=offset, user_id=user_id)

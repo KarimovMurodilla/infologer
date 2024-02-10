@@ -10,6 +10,7 @@ from schemas.knows import KnowsSchema
 
 from .likes import Like
 from .comments import Comment
+from .feedback import Feedback
 
 
 class Know(Base):
@@ -20,6 +21,7 @@ class Know(Base):
     description: Mapped[str]
     likes: Mapped[List["Like"]] = relationship(lazy="joined")
     comments: Mapped[List["Comment"]] = relationship()
+    feedback: Mapped["Feedback"] = relationship(lazy="joined")
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
     user = relationship("User", back_populates="knows", lazy="joined")
     created_at: Mapped[Optional[Annotated[datetime.datetime, mapped_column(nullable=False, default=datetime.datetime.utcnow)]]]
@@ -32,6 +34,7 @@ class Know(Base):
             description=self.description,
             user=self.user,
             likes=[like.to_read_model() for like in self.likes],
+            feedback=self.feedback.to_read_model() if self.feedback else None,
             created_at=self.created_at,
             updated_at=self.updated_at
         )

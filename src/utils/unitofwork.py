@@ -7,6 +7,7 @@ from repositories.users import UsersRepository
 from repositories.knows import KnowsRepository
 from repositories.comments import CommentsRepository
 from repositories.likes import LikesRepository
+from repositories.feedback import FeedbackRepository
 
 
 # https://github1s.com/cosmicpython/code/tree/chapter_06_uow
@@ -16,6 +17,7 @@ class IUnitOfWork(ABC):
     knows: Type[KnowsRepository]
     comments: Type[CommentsRepository]
     likes: Type[LikesRepository]
+    feedback: Type[FeedbackRepository]
     
     @abstractmethod
     def __init__(self):
@@ -50,6 +52,7 @@ class UnitOfWork:
         self.knows = KnowsRepository(self.session)
         self.comments = CommentsRepository(self.session)
         self.likes = LikesRepository(self.session)
+        self.feedback = FeedbackRepository(self.session)
 
     async def __aexit__(self, *args):
         await self.rollback()

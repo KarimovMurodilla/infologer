@@ -13,7 +13,10 @@ from config import FRONTEND_BASE_URL
 
 
 app = FastAPI(
-    title="Todogram"
+    title="Todogram",
+    docs_url = "/anonymous_url_for_basic_docs_9723",
+    redoc_url = "/anonymous_url_for_basic_redoc_9723",
+    swagger_ui_oauth2_redirect_url = "/anonymous_url_for_basic_docs_9723/oauth2-redirect",
 )
 
 

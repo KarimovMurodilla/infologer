@@ -35,3 +35,5 @@ SENDER_NAME = env.str("SENDER_NAME")
 # Google Oauth2
 CLIENT_ID = env.str("CLIENT_ID")
 CLIENT_SECRET = env.str("CLIENT_SECRET")
+
+API_KEY_OPENAI = env.str("API_KEY_OPENAI")
