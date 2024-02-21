@@ -37,7 +37,7 @@ router_google_oauth = {
         auth_backend, 
         SECRET,
         redirect_url=f"{FRONTEND_BASE_URL}/auth/google/callback"
-        ),
+    ),
     'prefix': "/auth/google",
     'tags': ["auth"],
 }

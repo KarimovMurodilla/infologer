@@ -23,6 +23,7 @@ REDIS_PORT = env.str("REDIS_PORT")
 
 SECRET = env.str("SECRET")
 FRONTEND_BASE_URL = env.str("FRONTEND_BASE_URL")
+DOCS_URL = env.str("DOCS_URL")
 
 # ---Mailjet Api (Send mail)---
 API_KEY_EMAIL = env.str("API_KEY_EMAIL")
