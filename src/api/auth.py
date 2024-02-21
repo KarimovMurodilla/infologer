@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from fastapi_users import FastAPIUsers
-from httpx_oauth.clients.google import GoogleOAuth2
+from utils.new_httpx_oauth.clients.google import GoogleOAuth2
 
 from auth.auth import auth_backend
 from auth.manager import get_user_manager

@@ -2,6 +2,8 @@ version: "3.7"
 services:
   db:
     image: postgres:12.15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
     container_name: todogram_db
     command: -p 1221
     expose:
@@ -35,3 +37,6 @@ services:
     command: ["/fastapi_app/docker/celery.sh", "celery"]
     depends_on:
       - redis
+
+volumes:
+  postgres_data:

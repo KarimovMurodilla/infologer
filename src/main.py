@@ -13,9 +13,9 @@ from config import FRONTEND_BASE_URL, DOCS_URL
 
 
 app = FastAPI(
-    title="Todogram",
-    docs_url = DOCS_URL,
-    redoc_url = DOCS_URL,
+    title="Infologer",
+    docs_url = f"/{DOCS_URL}",
+    redoc_url = f"/{DOCS_URL}",
     swagger_ui_oauth2_redirect_url = f"/{DOCS_URL}/oauth2-redirect",
 )
 

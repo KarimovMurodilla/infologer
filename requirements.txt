@@ -37,7 +37,6 @@ gunicorn==21.2.0
 h11==0.14.0
 httpcore==0.18.0
 httpx==0.25.0
-httpx-oauth==0.13.1
 humanize==4.9.0
 idna==3.4
 iniconfig==2.0.0
