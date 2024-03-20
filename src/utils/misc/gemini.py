@@ -1,11 +1,12 @@
-from openai import OpenAI
+import google.generativeai as genai
 
-from config import API_KEY_OPENAI
+from config import API_KEY_GENAI
 
 
-class ChatGPT:
+class Gemini:
     def __init__(self):
-        self.client = OpenAI(api_key=API_KEY_OPENAI)
+        self.client = genai.configure(api_key=API_KEY_GENAI)
+        self.model = genai.GenerativeModel('gemini-pro')
         self.system_content = (
             "You are not assistant. You are AI feedbacker. "
             "You must check carefully written factual information "
@@ -19,20 +20,10 @@ class ChatGPT:
         )
 
     def generate_feedback(self, content: str):
-        response = self.client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", 
-                    "content":  self.system_content
-                },
-                    
-                {"role": "user", "content": content}
-            ],
-            temperature=1,
-            max_tokens=150,
-            top_p=1,
-            frequency_penalty=0,
-            presence_penalty=0
+        response = self.model.generate_content(
+            "Give me short feedback to the written factual information. max_length=300. "
+            "Do'nt use markdown. Don't add headers like: 'Feedback:'. "
+            f"Information: {content}"
         )
 
-        return response.choices[0].message.content
+        return response.text

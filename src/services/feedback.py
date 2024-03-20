@@ -4,7 +4,7 @@ from utils.unitofwork import IUnitOfWork
 
 from .knows import KnowsService
 
-from utils.misc.chatgpt import ChatGPT
+from utils.misc.gemini import Gemini
 
 class FeedbackService:
     async def add_feedback(self, uow: IUnitOfWork, feedback: FeedbackSchemaAdd):
@@ -19,11 +19,11 @@ class FeedbackService:
             return feedback
         
     async def generate_feedback(self, uow, know_id):
-        chat_gpt = ChatGPT()
+        gemini = Gemini()
 
         know = await KnowsService().get_know(uow, know_id)
         content = f"{know.title}. {know.description}"
-        response = chat_gpt.generate_feedback(content)
+        response = gemini.generate_feedback(content)
 
         feedback = FeedbackSchemaAdd(description=response, know_id=know_id)
         await self.add_feedback(uow, feedback.model_dump())
