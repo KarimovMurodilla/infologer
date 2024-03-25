@@ -10,10 +10,9 @@ class Gemini:
 
     def generate_feedback(self, content: str):
         response = self.model.generate_content(
-            "Do'nt use any styling!\n"
-            "Give me short raw text feedback to the written factual information and provide links for detailed information."
+            "Give me short feedback to the written factual information and provide links for detailed information."
             "The provided feedback must be like this: "
-            "Feedback: provided text must max length=300.\n"
+            "Feedback: provided feedback text must max length=300.\n"
             "Useful links: \n\n"
             f"Information: {content}"
         )
